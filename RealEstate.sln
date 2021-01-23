@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Api", "RealEstate.Api\RealEstate.Api.csproj", "{F292DAE1-65C4-4516-A215-30D756B6E105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Core", "RealEstate.Core\RealEstate.Core.csproj", "{94901A93-74DD-4436-8275-636EE1AC82F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Core", "RealEstate.Core\RealEstate.Core.csproj", "{94901A93-74DD-4436-8275-636EE1AC82F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Infrastructure", "RealEstate.Infrastructure\RealEstate.Infrastructure.csproj", "{3580AA8A-2AB3-47F0-9DD6-677D57617335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Infrastructure", "RealEstate.Infrastructure\RealEstate.Infrastructure.csproj", "{3580AA8A-2AB3-47F0-9DD6-677D57617335}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstate.UI.AngularWeb", "RealEstate.UI.AngularWeb", "{9A057727-DD4C-4B5B-B5E6-65A051AFB9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Services", "RealEstate.Services\RealEstate.Services.csproj", "{852342B3-8AF3-4BAE-BF9B-ED37D4903318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{3580AA8A-2AB3-47F0-9DD6-677D57617335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3580AA8A-2AB3-47F0-9DD6-677D57617335}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3580AA8A-2AB3-47F0-9DD6-677D57617335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852342B3-8AF3-4BAE-BF9B-ED37D4903318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852342B3-8AF3-4BAE-BF9B-ED37D4903318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852342B3-8AF3-4BAE-BF9B-ED37D4903318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852342B3-8AF3-4BAE-BF9B-ED37D4903318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

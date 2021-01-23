@@ -32,6 +32,7 @@ namespace RealEstate.Infrastructure.Repositories
         {
             if (entity == null) throw new ArgumentNullException("entity");
 
+            entity.CreatedOn = DateTime.UtcNow;
             context.Set<T>().Add(entity);
             await context.SaveChangesAsync();
         }
@@ -39,6 +40,9 @@ namespace RealEstate.Infrastructure.Repositories
         public async Task UpdateAsync(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
+
+            entity.ModifiedOn = DateTime.UtcNow;
+            context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
         }
 
