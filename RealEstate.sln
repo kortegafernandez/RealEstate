@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Core", "RealEsta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Infrastructure", "RealEstate.Infrastructure\RealEstate.Infrastructure.csproj", "{3580AA8A-2AB3-47F0-9DD6-677D57617335}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstate.UI.AngularWeb", "RealEstate.UI.AngularWeb", "{9A057727-DD4C-4B5B-B5E6-65A051AFB9A5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Services", "RealEstate.Services\RealEstate.Services.csproj", "{852342B3-8AF3-4BAE-BF9B-ED37D4903318}"
 EndProject
 Global
