@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RealEstate.Core.DTOs;
 using RealEstate.Core.Entities;
+using RealEstate.Core.Exceptions;
 using RealEstate.Core.Interfaces;
 using RealEstate.Services.Interfaces;
 using System;
@@ -39,14 +40,21 @@ namespace RealEstate.Services
 
         public async Task<PropertyDto> InsertAsync(PropertyDto propertyDto)
         {
-            var owner = await _ownerService.GetByIdAsync(propertyDto.OwnerId);
-            if (owner == null)
+            if (propertyDto.OwnerId != default)
             {
-                throw new Exception("Owner doesn't exists.");
+                propertyDto.Owner = null;
+                var owner = await _ownerService.GetByIdAsync(propertyDto.OwnerId);
+
+                if (owner == null)
+                {
+                    throw new RealEstateException("Owner doesn't exists.");
+                }
             }
+
             var property = _mapper.Map<Property>(propertyDto);
             await _propertyRepository.InsertAsync(property);
             propertyDto = _mapper.Map<PropertyDto>(property);
+
             return propertyDto;
         }
 
@@ -54,9 +62,15 @@ namespace RealEstate.Services
         {
             var currentProperty = await _propertyRepository.GetByIdAsync(propertyDto.Id);
 
-            _mapper.Map(propertyDto,currentProperty);
+            if(currentProperty == null)
+            {
+                throw new RealEstateException($"Property with id {propertyDto.Id} doesn't exists.");
+            }
+
+            _mapper.Map(propertyDto, currentProperty);
             await _propertyRepository.UpdateAsync(currentProperty);
             propertyDto = _mapper.Map<PropertyDto>(currentProperty);
+
             return propertyDto;
         }
 

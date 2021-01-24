@@ -21,5 +21,14 @@ namespace RealEstate.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
+        public override async Task<Property> GetByIdAsync(int id)
+        {
+            return await context.Properties
+                .Include(p => p.Owner)
+                .Include(p => p.City)
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
     }
 }
