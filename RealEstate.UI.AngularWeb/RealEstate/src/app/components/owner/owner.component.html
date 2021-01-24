@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-body">
+      <div class="d-inline-block">
+        <h1 class="card-title text-primary mb-5">Propietarios</h1>
+      </div>
+      <div ngbDropdown class="d-inline-block float-right" placement="bottom-right">
+        <button class="btn btn-outline-primary icon-btn" type="button" id="dropdownMenuActions" ngbDropdownToggle>
+          <i class="mdi mdi-dots-vertical"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownMenuActions">
+          <a class="dropdown-item" routerLink="create">Nuevo Propietario</a>
+        </div>
+      </div>
+      <div *ngIf="owners">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Identificación</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let owner of owners; let i = index">
+              <td class="text-capitalize">{{owner.identificationNumber}}</td>
+              <td>{{owner.firstName}}</td>
+              <td>{{owner.lastName}}</td>
+              <td>
+                <a [routerLink]="['edit',owner.id]">Editar</a> &nbsp;|&nbsp;
+                <a [routerLink]="" (click)="delete(owner)">Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
