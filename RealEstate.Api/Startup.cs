@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RealEstate.Api.Middlewares;
 using RealEstate.Core.Interfaces;
 using RealEstate.Infrastructure.Data;
 using RealEstate.Infrastructure.Repositories;
@@ -64,6 +65,9 @@ namespace RealEstate.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // global error handler
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

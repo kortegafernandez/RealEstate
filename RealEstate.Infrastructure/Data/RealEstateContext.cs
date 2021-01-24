@@ -41,6 +41,7 @@ namespace RealEstate.Infrastructure.Data
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.IdentificationNumber).IsRequired().HasMaxLength(30);
+                entity.HasIndex(e => e.IdentificationNumber).IsUnique();
             });
 
             modelBuilder.Entity<PropertyCategory>(entity =>

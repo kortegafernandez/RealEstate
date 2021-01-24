@@ -37,12 +37,12 @@ namespace RealEstate.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProperty(PropertyDto property)
         {           
-            await _propertyService.InsertAsync(property);
+            property = await _propertyService.InsertAsync(property);
             var response = new ApiResponse<PropertyDto>(property);
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProperty(int id, PropertyDto property)
         {
             property.Id = id;
