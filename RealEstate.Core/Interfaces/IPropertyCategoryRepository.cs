@@ -2,7 +2,7 @@
 
 namespace RealEstate.Core.Interfaces
 {
-    public interface IAddressRepository: IGenericRepository<Address>
+    public interface IPropertyCategoryRepository : IGenericRepository<PropertyCategory>
     {
     }
 }

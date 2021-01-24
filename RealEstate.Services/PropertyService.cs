@@ -15,10 +15,12 @@ namespace RealEstate.Services
         private readonly IOwnerService _ownerService;
         private readonly IMapper _mapper;
         public PropertyService(IPropertyRepository propertyRepository,
-            IOwnerService ownerService)
+            IOwnerService ownerService,
+            IMapper mapper)
         {
             _propertyRepository = propertyRepository;
             _ownerService = ownerService;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<PropertyDto>> GetAllAsync()

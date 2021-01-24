@@ -35,10 +35,13 @@ namespace RealEstate.Api
                        
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IPropertyService, PropertyService>();
+            services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IPropertyCategoryService, PropertyCategoryService>();
 
-            services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IOwnerRepository, OwnerRepository>();
             services.AddTransient<IPropertyRepository, PropertyRepository>();
+            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IPropertyCategoryRepository, PropertyCategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
