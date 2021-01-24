@@ -3,27 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RealEstate.Infrastructure.Migrations
 {
-    public partial class DatabaseInitialStructure : Migration
+    public partial class InitialDatabaseStructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Cities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    City = table.Column<string>(maxLength: 50, nullable: false),
-                    Country = table.Column<string>(maxLength: 50, nullable: false),
-                    Address1 = table.Column<string>(maxLength: 100, nullable: false),
-                    Address2 = table.Column<string>(maxLength: 100, nullable: true),
-                    PostalCode = table.Column<string>(maxLength: 15, nullable: true)
+                    Name = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Cities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +47,7 @@ namespace RealEstate.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 30, nullable: false)
+                    Name = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,22 +66,25 @@ namespace RealEstate.Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
                     Area = table.Column<float>(nullable: false),
                     OwnerId = table.Column<int>(nullable: false),
-                    AddressId = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>(nullable: false),
+                    CityId = table.Column<int>(maxLength: 50, nullable: false),
+                    Address1 = table.Column<string>(maxLength: 100, nullable: false),
+                    Address2 = table.Column<string>(maxLength: 100, nullable: true),
+                    PostalCode = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Properties_PropertyCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "PropertyCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Properties_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -96,15 +95,37 @@ namespace RealEstate.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Properties_AddressId",
-                table: "Properties",
-                column: "AddressId");
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "CreatedOn", "ModifiedOn", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Medellín" },
+                    { 2, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bogotá" },
+                    { 3, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Cali" },
+                    { 4, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Barranquilla" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PropertyCategories",
+                columns: new[] { "Id", "CreatedOn", "ModifiedOn", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Residential" },
+                    { 2, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Commercial" },
+                    { 3, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Industrial" },
+                    { 4, new DateTime(2021, 1, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Raw Land" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_CategoryId",
                 table: "Properties",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_CityId",
+                table: "Properties",
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_OwnerId",
@@ -118,10 +139,10 @@ namespace RealEstate.Infrastructure.Migrations
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "PropertyCategories");
 
             migrationBuilder.DropTable(
-                name: "PropertyCategories");
+                name: "Cities");
 
             migrationBuilder.DropTable(
                 name: "Owners");

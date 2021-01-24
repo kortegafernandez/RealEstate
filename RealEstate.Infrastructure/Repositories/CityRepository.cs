@@ -4,8 +4,8 @@ using RealEstate.Infrastructure.Data;
 
 namespace RealEstate.Infrastructure.Repositories
 {
-    public class AddressRepository: GenericRepository<Address>, IAddressRepository
+    public class CityRepository : GenericRepository<City>, ICityRepository
     {
-        public AddressRepository(RealEstateContext context) : base(context) { }
+        public CityRepository(RealEstateContext context) : base(context) { }
     }
 }
