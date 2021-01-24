@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertyService } from '../../services/property.service';
 import { Property } from '../../models/';
 import { CreatePropertyComponent } from '../create-property/create-property.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-properties',
@@ -13,19 +14,20 @@ export class PropertiesComponent implements OnInit {
     properties: Property[];
 
     constructor(private propertyService: PropertyService,
-        private modalService: NgbModal) { }
+        private modalService: NgbModal,        
+        private toastr: ToastrService,) { }
 
     ngOnInit() {
         this.getProperties();
     }
-
+  
     getProperties() {
         this.propertyService.getAll().subscribe(
-            data => {
-                this.properties = data;
+            result => {
+                this.properties = result['data']; 
             },
             error => {
-                //this.toastr.error(error.error.Message, "Error obteniendo lista de propiedades.");
+                this.toastr.error(error.error.Message, "Error obteniendo lista de propiedades.");
             });
     }
 
@@ -33,17 +35,22 @@ export class PropertiesComponent implements OnInit {
         if (confirm("Seguro desea eliminar la Propiedad " + property.name + "?.")) {
             this.propertyService.delete(property.id).subscribe(
                 data => {
-                    //this.toastr.success("Registro eliminado.");
+                    this.toastr.success("Registro eliminado.");
                     this.getProperties();
                 },
                 error => {
-                    //this.toastr.error(error.error.Message, "Error eliminando el registro.");
+                    this.toastr.error(error.error.Message, "Error eliminando el registro.");
                 });
         }
     }
   
-    open() {
+    openModal(propertyId: number,readOnly:boolean) {
         const modalRef = this.modalService.open(CreatePropertyComponent,{ size: 'lg' });
-        modalRef.componentInstance.name = 'Create';
+        if (propertyId) {
+            modalRef.componentInstance.propertyId = propertyId;            
+        }
+        if(readOnly==true){
+            modalRef.componentInstance.readOnly = readOnly;            
+        }
     }
 }

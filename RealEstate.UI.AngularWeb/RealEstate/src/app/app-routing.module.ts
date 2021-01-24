@@ -11,6 +11,7 @@ const routes: Routes = [
   },
   { path: 'properties/create', component: CreatePropertyComponent },
   { path: 'owners', component: OwnersComponent },
+  { path: 'properties/edit/:id', component: CreatePropertyComponent},
   
   { path: '**', redirectTo: '' }
 ];

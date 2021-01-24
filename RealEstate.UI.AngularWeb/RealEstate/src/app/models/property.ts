@@ -8,6 +8,7 @@ export class Property{
     price:number;
     area:number;
     ownerId:number;
+    cityId:number;
     addressId:number;
     categoryId:number;
     firstName:string;
