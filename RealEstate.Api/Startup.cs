@@ -42,6 +42,11 @@ namespace RealEstate.Api
             services.AddTransient<IPropertyRepository, PropertyRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IPropertyCategoryRepository, PropertyCategoryRepository>();
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +56,8 @@ namespace RealEstate.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 

@@ -18,7 +18,7 @@ namespace RealEstate.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCities()
+        public async Task<IActionResult> GetPropertyCategories()
         {
             var categories = await _propertyCategoryService.GetAllAsync();
             var response = new ApiResponse<IEnumerable<PropertyCategoryDto>>(categories);

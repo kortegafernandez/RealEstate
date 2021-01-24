@@ -1,4 +1,4 @@
-import { Component, OnInit, Input  } from '@angular/core';
+import { Component, Input, OnInit  } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CityService } from 'src/app/services/city.service';
@@ -7,6 +7,7 @@ import { City, Property, PropertyCategory } from '../../models';
 import { PropertyService } from '../../services/property.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NoopAnimationPlayer } from '@angular/animations';
 
 @Component({
     selector: 'app-create-property',
@@ -14,14 +15,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     // styleUrls: ['../../../styles.css']
 })
 export class CreatePropertyComponent implements OnInit {
-    @Input() name;
-
     property: Property;
     categories: PropertyCategory[];
     cities:City[];
     loading: boolean;
     mode: string = '';
-    propertyId: number;
+    private _propertyId: number;
+    private _readOnly: boolean;
 
     constructor(private propertyService: PropertyService,
         private propertyCategoryService: PropertyCategoryService,
@@ -30,42 +30,60 @@ export class CreatePropertyComponent implements OnInit {
         private toastr: ToastrService,
         public activeModal: NgbActiveModal) { }
 
+    @Input()
+    set propertyId(propertyId: number) {        
+        this._propertyId = propertyId;
+    }        
+
+    @Input()
+    set readOnly(readOnly: boolean) {        
+        this._readOnly = readOnly;
+        if(this._readOnly && this._readOnly==true){
+            this.mode = 'view';
+        }
+    }  
+    
     ngOnInit() {
         this.loading = false;
         this.property = new Property();
-        console.log(this.property);
-
+       
         this.activeRoute.params.subscribe(params => {
-            if (params['id']) {
-                this.mode = 'edit';
-                this.propertyId = params['id'];
-            }
-            else {
-                this.mode = 'new';
+            if (!this._propertyId) {
+                if (params['id'] && this._readOnly==true) {
+                    this.mode = 'view';
+                    this._propertyId = params['id'];
+                }
+                else if (params['id']) {
+                    this.mode = 'edit';
+                    this._propertyId = params['id'];
+                }
+                else {
+                    this.mode = 'new';
+                }
             }
         });
 
-        if (this.mode == 'edit') {
+        if (this.mode != 'new') {
             this.loading = true;
-            this.propertyService.getById(this.propertyId).subscribe(
-                data => {
+            this.propertyService.getById(this._propertyId).subscribe(
+                result => {          ;
                     this.loading = false;
-                    this.property = data;
+                    this.property = result["data"];
                 },
                 error => {
                     this.loading = false;
-                    this.toastr.error(error.error.Message, "Error obteniendo información para la propiedad con id " + this.propertyId);
+                    this.toastr.error(error.error.Message, "Error obteniendo información para la propiedad con id " + this._propertyId);
                 });
         }
         this.getCategories();
+        this.getCities();
     }
 
     getCategories() {
-        console.log("listar categorias");
         this.propertyCategoryService.getPropertyCategories().subscribe(
-            data => {
+            result => {
                 this.loading = false;
-                this.categories = data;
+                this.categories = result["data"];
             },
             error => {
                 this.loading = false;
@@ -74,11 +92,10 @@ export class CreatePropertyComponent implements OnInit {
     }
 
     getCities() {
-        console.log("listar ciudades");
         this.cityService.getCities().subscribe(
-            data => {
+            result => {
                 this.loading = false;
-                this.cities = data;
+                this.cities = result["data"];
             },
             error => {
                 this.loading = false;
@@ -87,7 +104,6 @@ export class CreatePropertyComponent implements OnInit {
     }
 
     create(form: NgForm) {
-        console.log("guardar "+this.mode);
         console.log(this.property);
         this.loading = true;
         if (this.mode == 'edit') {
