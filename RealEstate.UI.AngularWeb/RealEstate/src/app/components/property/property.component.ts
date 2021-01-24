@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PropertyService } from '../../services/property.service';
 import { Property } from '../../models/';
+import { CreatePropertyComponent } from '../create-property/create-property.component';
 
 @Component({
     selector: 'app-properties',
@@ -10,7 +12,8 @@ import { Property } from '../../models/';
 export class PropertiesComponent implements OnInit {
     properties: Property[];
 
-    constructor(private propertyService: PropertyService) { }
+    constructor(private propertyService: PropertyService,
+        private modalService: NgbModal) { }
 
     ngOnInit() {
         this.getProperties();
@@ -39,4 +42,8 @@ export class PropertiesComponent implements OnInit {
         }
     }
   
+    open() {
+        const modalRef = this.modalService.open(CreatePropertyComponent,{ size: 'lg' });
+        modalRef.componentInstance.name = 'Create';
+    }
 }
