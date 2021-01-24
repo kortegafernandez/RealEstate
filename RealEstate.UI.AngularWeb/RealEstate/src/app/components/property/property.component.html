@@ -3,15 +3,10 @@
       <div class="d-inline-block">
         <h1 class="card-title text-primary mb-5">Propiedades</h1>
       </div>
-      <div ngbDropdown class="d-inline-block float-right" placement="bottom-right">
-        <button class="btn btn-outline-primary icon-btn" type="button" id="dropdownMenuActions" ngbDropdownToggle>
-          <i class="mdi mdi-dots-vertical"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownMenuActions">
-          <a class="dropdown-item" routerLink="properties/create">Nueva Propiedad</a>
-        </div>
+      <div ngbDropdown class="d-inline-block float-right" placement="bottom-right">      
+        <button class="btn btn-lg btn-outline-primary" (click)="open()">Nueva Propiedad</button>
       </div>
-      <div *ngIf="properties">
+      <div *ngIf="properties; else notProperties">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -32,6 +27,9 @@
           </tbody>
         </table>
       </div>
+      <ng-template #notProperties>
+        <p>No hay propipedades registradas aún.</p>
+      </ng-template>
     </div>
   </div>
   

@@ -14,8 +14,8 @@ export class Property{
     lastName:string;
     ownerIdentificationNumber:string;
     city:string;
-    country:string;
-    address:string;
+    address1:string;
+    address2:string;
     postalCode:string;
     propertyCategory:PropertyCategory;
 }
