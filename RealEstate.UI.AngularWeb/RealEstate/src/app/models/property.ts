@@ -10,7 +10,12 @@ export class Property{
     ownerId:number;
     addressId:number;
     categoryId:number;
-    owner:Owner;
-    address:Address;
+    firstName:string;
+    lastName:string;
+    ownerIdentificationNumber:string;
+    city:string;
+    country:string;
+    address:string;
+    postalCode:string;
     propertyCategory:PropertyCategory;
 }

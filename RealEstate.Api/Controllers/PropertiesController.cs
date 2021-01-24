@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RealEstate.Api.Response;
 using RealEstate.Core.DTOs;
-using RealEstate.Core.Entities;
-using RealEstate.Core.Interfaces;
 using RealEstate.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,11 +9,11 @@ namespace RealEstate.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PropertyController : ControllerBase
+    public class PropertiesController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
 
-        public PropertyController(IPropertyService propertyService)
+        public PropertiesController(IPropertyService propertyService)
         {
             _propertyService = propertyService;
         }

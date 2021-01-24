@@ -20,7 +20,7 @@ export class CreatePropertyComponent implements OnInit {
         private activeRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        this.loading = true;
+        this.loading = false;
         this.property = new Property();
 
         this.activeRoute.params.subscribe(params => {
