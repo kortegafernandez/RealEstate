@@ -67,7 +67,15 @@ namespace RealEstate.Services
                 throw new RealEstateException($"Property with id {propertyDto.Id} doesn't exists.");
             }
 
-            _mapper.Map(propertyDto, currentProperty);
+            currentProperty.Address1 = propertyDto.Address1;
+            currentProperty.Address2 = propertyDto.Address2;
+            currentProperty.Area = propertyDto.Area;
+            currentProperty.CategoryId = propertyDto.CategoryId;
+            currentProperty.CityId = propertyDto.CityId;
+            currentProperty.Name = propertyDto.Name;
+            currentProperty.OwnerId = propertyDto.OwnerId;
+            currentProperty.PostalCode = propertyDto.PostalCode;
+            currentProperty.Price = propertyDto.Price;
             await _propertyRepository.UpdateAsync(currentProperty);
             propertyDto = _mapper.Map<PropertyDto>(currentProperty);
 

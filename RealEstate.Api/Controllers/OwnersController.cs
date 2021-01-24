@@ -22,6 +22,7 @@ namespace RealEstate.Api.Controllers
         {
             var owners = await _ownerService.GetAllAsync();
             var response = new ApiResponse<IEnumerable<OwnerDto>>(owners);
+            
             return Ok(response);
         }
 
@@ -30,6 +31,7 @@ namespace RealEstate.Api.Controllers
         {
             var owner = await _ownerService.GetByIdAsync(id);
             var response = new ApiResponse<OwnerDto>(owner);
+            
             return Ok(response);
         }
 
@@ -38,6 +40,7 @@ namespace RealEstate.Api.Controllers
         {           
             var savedOwner = await _ownerService.InsertAsync(owner);
             var response = new ApiResponse<OwnerDto>(savedOwner);
+            
             return Ok(response);
         }
 
@@ -48,6 +51,7 @@ namespace RealEstate.Api.Controllers
 
             var updatedOwner= await _ownerService.UpdateAsync(owner);
             var response = new ApiResponse<OwnerDto>(updatedOwner);
+            
             return Ok(response);
         }
 
@@ -55,6 +59,7 @@ namespace RealEstate.Api.Controllers
         public async Task<IActionResult> DeleteOwner(int id)
         {
             await _ownerService.DeleteAsync(id);
+            
             return Ok();
         }
     }

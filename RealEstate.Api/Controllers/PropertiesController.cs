@@ -23,6 +23,7 @@ namespace RealEstate.Api.Controllers
         {
             var properties = await _propertyService.GetAllAsync();
             var response = new ApiResponse<IEnumerable<PropertyDto>>(properties);
+            
             return Ok(response);
         }
 
@@ -31,6 +32,7 @@ namespace RealEstate.Api.Controllers
         {
             var property = await _propertyService.GetByIdAsync(id);
             var response = new ApiResponse<PropertyDto>(property);
+            
             return Ok(response);
         }
 
@@ -39,6 +41,7 @@ namespace RealEstate.Api.Controllers
         {           
             property = await _propertyService.InsertAsync(property);
             var response = new ApiResponse<PropertyDto>(property);
+            
             return Ok(response);
         }
 
@@ -49,14 +52,17 @@ namespace RealEstate.Api.Controllers
 
             await _propertyService.UpdateAsync(property);
             var response = new ApiResponse<PropertyDto>(property);
+            
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProperty(int id)
         {
             await _propertyService.DeleteAsync(id);
-            return Ok();
+            var response = new ApiResponse<bool>(true);
+            
+            return Ok(response);
         }
     }
 }
