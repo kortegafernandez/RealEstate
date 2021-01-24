@@ -1,12 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using RealEstate.Core.DTOs;
 using RealEstate.Core.Entities;
 using RealEstate.Core.Exceptions;
 using RealEstate.Core.Interfaces;
 using RealEstate.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RealEstate.Services
 {
@@ -28,6 +27,7 @@ namespace RealEstate.Services
         {
             var properties = await _propertyRepository.GetAllAsync();
             var propertiesDtos = _mapper.Map<IEnumerable<PropertyDto>>(properties);
+            
             return propertiesDtos;
         }
 
@@ -35,6 +35,7 @@ namespace RealEstate.Services
         {
             var property = await _propertyRepository.GetByIdAsync(id);
             var propertyDto = _mapper.Map<PropertyDto>(property);
+            
             return propertyDto;
         }
 
@@ -72,10 +73,21 @@ namespace RealEstate.Services
             currentProperty.Area = propertyDto.Area;
             currentProperty.CategoryId = propertyDto.CategoryId;
             currentProperty.CityId = propertyDto.CityId;
-            currentProperty.Name = propertyDto.Name;
-            currentProperty.OwnerId = propertyDto.OwnerId;
+            currentProperty.Name = propertyDto.Name;            
             currentProperty.PostalCode = propertyDto.PostalCode;
             currentProperty.Price = propertyDto.Price;
+
+            if(propertyDto.OwnerId != default)
+            {
+                currentProperty.OwnerId = propertyDto.OwnerId;
+            }
+            else
+            {
+                propertyDto.Owner = await _ownerService.InsertAsync(propertyDto.Owner);
+                currentProperty.OwnerId = propertyDto.Owner.Id;
+            }
+                
+
             await _propertyRepository.UpdateAsync(currentProperty);
             propertyDto = _mapper.Map<PropertyDto>(currentProperty);
 

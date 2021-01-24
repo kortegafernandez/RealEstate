@@ -35,6 +35,15 @@ namespace RealEstate.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetByIdentificationNumber/{id}")]
+        public async Task<IActionResult> GetByIdentificationNumber(string id)
+        {
+            var owner = await _ownerService.GetByIdendtificationNumberAsync(id);
+            var response = new ApiResponse<OwnerDto>(owner);
+
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOwner(OwnerDto owner)
         {           

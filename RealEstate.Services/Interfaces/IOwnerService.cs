@@ -11,5 +11,6 @@ namespace RealEstate.Services.Interfaces
         Task<OwnerDto> GetByIdAsync(int id);
         Task<OwnerDto> InsertAsync(OwnerDto ownerDto);
         Task<OwnerDto> UpdateAsync(OwnerDto ownerDto);
+        Task<OwnerDto> GetByIdendtificationNumberAsync(string identificationNumber);
     }
 }
