@@ -9,7 +9,7 @@ namespace RealEstate.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PropertyCategoriesController : Controller
+    public class PropertyCategoriesController : ControllerBase
     {
         private readonly IPropertyCategoryService _propertyCategoryService;
         public PropertyCategoriesController(IPropertyCategoryService propertyCategoryService)

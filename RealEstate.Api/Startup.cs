@@ -1,17 +1,21 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RealEstate.Api.Middlewares;
+using RealEstate.Api.Response;
 using RealEstate.Core.Interfaces;
 using RealEstate.Infrastructure.Data;
 using RealEstate.Infrastructure.Repositories;
 using RealEstate.Services;
 using RealEstate.Services.Interfaces;
 using System;
+using System.Linq;
 
 namespace RealEstate.Api
 {
@@ -27,7 +31,17 @@ namespace RealEstate.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = c =>
+                {
+                    var errorMessage = string.Join('\n', c.ModelState.Values.Where(v => v.Errors.Count > 0)
+                                                .SelectMany(v => v.Errors)
+                                                .Select(v => v.ErrorMessage));
+                    
+                    return new BadRequestObjectResult(new ApiResponse<object>(errorMessage));
+                };
+            });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -50,6 +64,12 @@ namespace RealEstate.Api
                  .AllowAnyMethod()
                  .AllowAnyHeader());
             });
+
+            services.AddMvc().AddFluentValidation(options =>
+            {
+                options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

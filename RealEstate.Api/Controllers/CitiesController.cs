@@ -9,7 +9,7 @@ namespace RealEstate.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CitiesController : Controller
+    public class CitiesController : ControllerBase
     {
         private readonly ICityService _cityService;
         public CitiesController(ICityService cityService)
