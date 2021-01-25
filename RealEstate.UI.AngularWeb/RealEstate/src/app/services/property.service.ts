@@ -8,11 +8,11 @@ export class PropertyService{
     constructor(private http: HttpClient) { }
 
     create(property: Property) {
-        return this.http.post<Property>(environment.apiBaseUrl + 'properties/create', property);
+        return this.http.post<Property>(environment.apiBaseUrl + 'properties/', property);
     }
 
     update(property: Property) {
-        return this.http.put<Property>(environment.apiBaseUrl + 'properties', property);
+        return this.http.put<Property>(environment.apiBaseUrl + 'properties/'+property.id, property);
     }
 
     getById(propertyId: number) {

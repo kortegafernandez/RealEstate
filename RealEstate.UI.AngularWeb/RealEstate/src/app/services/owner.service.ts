@@ -27,4 +27,9 @@ export class OwnerService{
         return this.http.delete<boolean>(environment.apiBaseUrl + 'owners/' + id);
     }
 
+    getByIdentificationNumber(ownerIdentificationNumber: string) {
+        return this.http.get<Owner>(environment.apiBaseUrl + 'owners/getByIdentificationNumber/'+ownerIdentificationNumber);
+    }  
+
+
 }

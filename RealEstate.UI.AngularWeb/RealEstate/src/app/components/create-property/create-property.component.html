@@ -1,12 +1,16 @@
 <div class="card">
     <div class="card-body">
-      <h1 class="card-title text-primary mb-5">{{mode == 'edit' ? 'Editar' : 'Crear'}} Propiedad</h1>
-     
+      <div class="modal-header" *ngIf="activeModal">
+        <h1 class="card-title text-primary mb-5">{{mode == 'edit' ? 'Editar' : 'Datos'}} Propiedad</h1>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <form #f="ngForm"  name="form" (ngSubmit)="f.form.valid && create(f)" novalidate>
 
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
           <label for="name">Nombre</label>
-          <input type="text" class="form-control" name="name" [(ngModel)]="property.name" #name="ngModel" [disabled]="mode == 'view'" required />
+          <input type="text" maxlength="100" class="form-control" name="name" [(ngModel)]="property.name" #name="ngModel" [disabled]="mode == 'view'" required  />
           <div *ngIf="f.submitted && !name.valid" class="help-block">Nombre es requerido.</div>
         </div> 
 
@@ -17,58 +21,80 @@
               <select name="categoryId" [(ngModel)]="property.categoryId" #categoryId="ngModel" class="form-control" [disabled]="mode == 'view'" required>
                 <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
               </select>
+              <div *ngIf="f.submitted && !categoryId.valid" class="help-block">Categoría es requerida.</div>
             </div>  
           </div>
           <div class="col-sm">
             <div class="form-group">
               <label for="price">Precio</label>
-              <input type="text" class="form-control" name="price" [(ngModel)]="property.price" #price="ngModel" [disabled]="mode == 'view'" />
+              <input type="number" class="form-control" name="price" [(ngModel)]="property.price" #price="ngModel" OnlyNumbers  [disabled]="mode == 'view'" required/>
+              <div *ngIf="f.submitted && !price.valid" class="help-block">El Precio es requerido.</div>
             </div>
           </div>
           <div class="col-sm">
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !area.valid }">
               <label for="area">Area</label>
-              <input type="area" class="form-control" name="area" [(ngModel)]="property.area" #area="ngModel" [disabled]="mode == 'view'" required />
+              <input type="number" class="form-control" name="area" [(ngModel)]="property.area" #area="ngModel" OnlyNumbers [disabled]="mode == 'view'" required />
               <div *ngIf="f.submitted && !area.valid" class="help-block">Area es requerida.</div>
             </div>
       
           </div>
         </div>
-                
-        <div class="form-group">
-          <label>Identificación Propietario</label>
-          <input type="ownerIdentificationNumber" class="form-control" name="ownerIdentificationNumber" [(ngModel)]="property.ownerIdentificationNumber"
-           #ownerIdentificationNumber="ngModel" [disabled]="mode == 'view'" required />
-          <div *ngIf="f.submitted && !ownerIdentificationNumber.valid" class="help-block">Propietario es requerida.</div>
-        </div>      
 
         <div class="row">
           <div class="col-sm">
             <div class="form-group">
-              <label>Categoría</label>
+              <label>Identificación Propietario</label>
+              <input type="text" maxlength="30" class="form-control" name="identificationNumber" [(ngModel)]="property?.owner.identificationNumber"
+              (ngModelChange)="identificationNumberChange($event)"
+               #identificationNumber="ngModel" [disabled]="mode == 'view'" required />  
+               <div *ngIf="f.submitted && !identificationNumber.valid" class="help-block">Identificación del propietario es requerida.</div>
+               
+            </div>  
+          </div>
+          <div class="col-sm">
+            <div class="form-group">
+              <label>Nombre Propietario</label>
+              <input type="text" maxlength="50" class="form-control" name="firstName" [(ngModel)]="property?.owner.firstName" #firstName="ngModel"  [disabled]="mode == 'view'" required/>                        
+              <div *ngIf="f.submitted && !firstName.valid" class="help-block">Nombre del propietario es requerido.</div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="form-group">
+              <label>Apellido Propietario</label>
+              <input type="text" maxlength="50" class="form-control" name="lastName" [(ngModel)]="property?.owner.lastName" #lastName="ngModel"  [disabled]="mode == 'view'" required/>          
+              <div *ngIf="f.submitted && !lastName.valid" class="help-block">Apellido del propietario es requerido.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm">
+            <div class="form-group">
+              <label>Ciudad</label>
               <select name="cityId" [(ngModel)]="property.cityId" #cityId="ngModel" class="form-control" [disabled]="mode == 'view'" required>
                 <option *ngFor="let city of cities" [ngValue]="city.id">{{city.name}}</option>
               </select>
+              <div *ngIf="f.submitted && !cityId.valid" class="help-block">Ciudad es requerida.</div>
             </div>
           </div>
           <div class="col-sm">
             <div class="form-group">
               <label>Código Postal</label>
-              <input type="postalCode" class="form-control" name="postalCode" [(ngModel)]="property.postalCode" #postalCode="ngModel"  [disabled]="mode == 'view'"/>          
+              <input type="text" maxlength="15" class="form-control" name="postalCode" [(ngModel)]="property.postalCode" #postalCode="ngModel"  [disabled]="mode == 'view'"/>          
             </div>
           </div>
         </div>       
 
         <div class="form-group">
           <label>Dirección 1</label>
-          <input type="address1" class="form-control" name="address1" [(ngModel)]="property.address1" #address1="ngModel" [disabled]="mode == 'view'" required />
+          <input type="text" maxlength="100" class="form-control" name="address1" [(ngModel)]="property.address1" #address1="ngModel" [disabled]="mode == 'view'" required />
           <div *ngIf="f.submitted && !address1.valid" class="help-block">Dirección es requerida.</div>
         </div>
 
         <div class="form-group">
           <label>Dirección 2</label>
-          <input type="address2" class="form-control" name="address2" [(ngModel)]="property.address2" #address2="ngModel" [disabled]="mode == 'view'" required />
-          <div *ngIf="f.submitted && !address2.valid" class="help-block">Dirección es requerida.</div>
+          <input type="text" maxlength="100" class="form-control" name="address2" [(ngModel)]="property.address2" #address2="ngModel" [disabled]="mode == 'view'"  />
         </div>      
 
         <div class="form-group">

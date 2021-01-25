@@ -3,11 +3,11 @@ import {NgForm} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CityService } from 'src/app/services/city.service';
 import { PropertyCategoryService } from 'src/app/services/propertyCategory.service';
-import { City, Property, PropertyCategory } from '../../models';
+import { City, Owner, Property, PropertyCategory } from '../../models';
 import { PropertyService } from '../../services/property.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { NoopAnimationPlayer } from '@angular/animations';
+import { OwnerService } from 'src/app/services/owner.service';
 
 @Component({
     selector: 'app-create-property',
@@ -18,6 +18,7 @@ export class CreatePropertyComponent implements OnInit {
     property: Property;
     categories: PropertyCategory[];
     cities:City[];
+    owner:Owner;
     loading: boolean;
     mode: string = '';
     private _propertyId: number;
@@ -28,11 +29,13 @@ export class CreatePropertyComponent implements OnInit {
         private cityService: CityService,
         private activeRoute: ActivatedRoute,
         private toastr: ToastrService,
-        public activeModal: NgbActiveModal) { }
+        public activeModal: NgbActiveModal,
+        public ownerService:OwnerService ) { }
 
     @Input()
     set propertyId(propertyId: number) {        
         this._propertyId = propertyId;
+        this.mode = 'edit';
     }        
 
     @Input()
@@ -46,6 +49,7 @@ export class CreatePropertyComponent implements OnInit {
     ngOnInit() {
         this.loading = false;
         this.property = new Property();
+        this.property.owner = new Owner();
        
         this.activeRoute.params.subscribe(params => {
             if (!this._propertyId) {
@@ -66,7 +70,7 @@ export class CreatePropertyComponent implements OnInit {
         if (this.mode != 'new') {
             this.loading = true;
             this.propertyService.getById(this._propertyId).subscribe(
-                result => {          ;
+                result => {   
                     this.loading = false;
                     this.property = result["data"];
                 },
@@ -103,14 +107,37 @@ export class CreatePropertyComponent implements OnInit {
             });
     }
 
+    identificationNumberChange(value){
+        this.ownerService.getByIdentificationNumber(value).subscribe(
+            result => {                   
+                this.loading = false;
+                if(result["data"]){
+                    this.owner = result["data"];
+                    this.property.owner=this.owner;  
+                    this.property.ownerId = this.owner.id;              
+                }else{
+                    this.property.ownerId=0;
+                    this.property.owner=new Owner();
+                    this.property.owner.identificationNumber=value;
+                    
+                }
+            },
+            error => {
+                this.loading = false;
+                this.toastr.error(error.error.Message, "Error obteniendo información para la identificación del propietario " + value);
+            });
+    }
+
     create(form: NgForm) {
-        console.log(this.property);
-        this.loading = true;
+        this.loading = true; 
         if (this.mode == 'edit') {
             this.propertyService.update(this.property).subscribe(
                 data => {
                     this.loading = false;
-                    this.toastr.success("Propiedad actualizado!!!");
+                    this.toastr.success("Propiedad actualizada!!!");
+                    form.resetForm();
+                    this.activeModal.close();
+
                 },
                 error => {
                     this.loading = false;
@@ -122,8 +149,9 @@ export class CreatePropertyComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.loading = false;
-                        this.toastr.success("Propiedad creado!!!");
+                        this.toastr.success("Propiedad creada!!!");
                         form.resetForm();
+                        this.activeModal.close();
                     },
                     error => {
                         this.loading = false;
